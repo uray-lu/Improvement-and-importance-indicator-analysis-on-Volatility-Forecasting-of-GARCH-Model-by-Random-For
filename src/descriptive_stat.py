@@ -13,6 +13,10 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from colorama import Back, init, Front
+import os
+
+
+
 
 init(autoreset=True)
 
@@ -56,6 +60,11 @@ class descriptive_stat:
         
         output = self.check_data().apply(self.stat())
         print(output)
+        
+        
+        
+        #make root dir
+        
         
         try:
             output.to_csv('report/descripitive_statistics/'+ str(Path(self.directory).stem)+'.csv')
