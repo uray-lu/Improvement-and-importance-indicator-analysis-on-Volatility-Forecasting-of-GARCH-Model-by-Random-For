@@ -17,11 +17,6 @@ from colorama import init, Fore
 import logging
 from datetime import datetime
 from pathlib import Path
-import numpy as np
-
-
-
-
 
 
 class descriptive_stat:
