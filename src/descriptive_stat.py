@@ -36,34 +36,42 @@ class descriptive_stat:
         
         if len(raw.columns) == 2:
             
-            data = raw.iloc[:, -1]
+            input_data = raw.iloc[:, -1]
             
-            df = pd.DataFrame(data)
+            df = pd.DataFrame(input_data)
             df.columns = [str(Path(self.directory).stem)]
           
         else:
             
             if 'Close' in raw.columns:
                 
-                data = raw['Close']
+                input_data = raw['Close']
             
             elif 'close' in raw.columns:
                 
-                data = raw['close']
+                input_data = raw['close']
             
             elif 'Price' in raw.columns:
                 
-                data = raw['Price']
+                input_data = raw['Price']
                 
             elif ' Close' in raw.columns:
                 
-                data = raw[' Close']
+                input_data = raw[' Close']
             
-            
-            df = pd.DataFrame(data, )
+            df = pd.DataFrame(input_data, )
             df.columns = [str(Path(self.directory).stem)]
-
+            
         
+        try:
+           
+            df = self.to_int(df[str(Path(self.directory).stem)])  
+        
+        except:
+            
+            pass
+            
+
         return df
             
 
@@ -89,7 +97,14 @@ class descriptive_stat:
         
         
         return stats_data
+    
+    def to_int(self, x):
         
+        x = x.str.replace(',' ,'' )
+        x = x.astype(float)
+        x = pd.DataFrame(x)
+        
+        return x
         
         
         
@@ -121,15 +136,12 @@ layout = layout.T
 print(layout)
 
 
-
-
-
 root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
 
 
 try:
     
-    if os.path.isdir(root_path+'/report/descriptive_stattistic') == True:
+    if os.path.isdir(root_path+'/report/descriptive_statistic') == True:
             
         pass
     
