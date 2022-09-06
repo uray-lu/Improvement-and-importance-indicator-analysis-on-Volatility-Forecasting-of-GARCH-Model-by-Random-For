@@ -1,0 +1,4 @@
+,0,0,0,0,0,0
+name,SH0001_growth,S&P500_growth,Nikke_growth,NASDAQ_growth,DJI_growth,HSI_growth
+KPSS Statistic,0.148346,0.110972,0.085605,0.086803,0.065699,0.041787
+p-value,0.100000,0.100000,0.100000,0.100000,0.100000,0.100000

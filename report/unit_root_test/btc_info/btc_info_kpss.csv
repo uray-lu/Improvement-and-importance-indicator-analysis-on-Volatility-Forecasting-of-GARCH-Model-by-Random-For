@@ -1,0 +1,4 @@
+,0,0,0,0,0,0,0
+name,BTC_address_growth,BTC_volume_growth,Realized_volatility_unit(d),BTC_VIX_growth,BTC_hashrate_growth,Daily_returns,BTC_google_trend_growth
+KPSS Statistic,0.161092,0.121553,0.208236,0.034386,0.191444,0.358976,0.030571
+p-value,0.100000,0.100000,0.100000,0.100000,0.100000,0.094838,0.100000

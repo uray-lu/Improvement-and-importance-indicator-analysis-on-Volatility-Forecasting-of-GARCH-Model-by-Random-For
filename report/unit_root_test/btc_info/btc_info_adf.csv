@@ -1,0 +1,4 @@
+,0,0,0,0,0,0,0
+name,BTC_address_growth,BTC_volume_growth,Realized_volatility_unit(d),BTC_VIX_growth,BTC_hashrate_growth,Daily_returns,BTC_google_trend_growth
+ADF Statistic,-11.244000,-9.833000,-11.987000,-41.770000,-19.610000,-18.101000,-8.661000
+p-value,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
