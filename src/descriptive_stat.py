@@ -79,7 +79,7 @@ class descriptive_stat:
                 
                 pass
             
-            #df = pd.DataFrame(df.T)
+            
             
             layout.append(df)
             
@@ -127,9 +127,15 @@ class descriptive_stat:
 
         try:
             
-            if os.path.isdir(root_path+'/report/descriptive_statistic') == True:
+            if os.path.isdir(root_path+'/report') == True:
                     
-                pass
+                if os.path.isdir(root_path+'/report/descriptive_statistic') == True:
+                    
+                    pass
+                
+                else:
+                
+                    os.mkdir(root_path+'/report/descriptive_statistic')
             
             else:   
                 os.mkdir(root_path+'/report')
@@ -141,11 +147,6 @@ class descriptive_stat:
         except:
             
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' ' + str(Path(subdir).stem): ^10}{'Descriptive statistic store': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
-             
-    
-    
-            
-        
     
     def to_int(self, x):
         
