@@ -97,7 +97,7 @@ class rf_importance:
         plt.title("Random Forest Importance") # title
         plt.xlabel("Features") # y label
         plt.ylabel("Importance for predicting BTC Realized Volatility")
-    
+        plt.show()
 
         root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
 
