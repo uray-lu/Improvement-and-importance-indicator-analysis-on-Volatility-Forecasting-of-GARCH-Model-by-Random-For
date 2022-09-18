@@ -30,11 +30,11 @@ class rf_importance:
         plt.rcParams.update({'figure.figsize': (23.0, 8.0)})
         plt.rcParams.update({'font.size': 14})
         
-        root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
+        self.root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
 
         self.directory = directory
         
-        self.target = pd.read_csv(root_path +'/Data/processed/btc_info/Realized_volatility_unit(d).csv')
+        self.target = pd.read_csv(self.root_path +'/Data/processed/btc_info/Realized_volatility_unit(d).csv')
         
         csv_files = glob.glob(os.path.join(self.directory, '*.csv'))
         element_frame = pd.DataFrame()
@@ -97,30 +97,30 @@ class rf_importance:
         plt.title("Random Forest Importance") # title
         plt.xlabel("Features") # y label
         plt.ylabel("Importance for predicting BTC Realized Volatility")
-        plt.show()
+    
 
-        root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
+        #root_path = os.getcwd()[:os.getcwd().find('/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm')+len('bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/')]
 
 
         try:
             
-            if os.path.isdir(root_path+'/report') == True:
+            if os.path.isdir(self.root_path+'/report') == True:
                     
-                if os.path.isdir(root_path+'/report/randomforest_importance') == True:
+                if os.path.isdir(self.root_path+'/report/randomforest_importance') == True:
                     
                     pass
                 
                 else:
                 
-                    os.mkdir(root_path+'/report/randomforest_importance')
+                    os.mkdir(self.root_path+'/report/randomforest_importance')
             
             else:   
                 
-                os.mkdir(root_path+'/report')
-                os.mkdir(root_path+'/report/randomforest_importance')
+                os.mkdir(self.root_path+'/report')
+                os.mkdir(self.root_path+'/report/randomforest_importance')
             
             
-            plt.savefig(root_path +'/report/randomforest_importance/' + str(Path(self.directory).stem) +'.png', dpi =300)
+            plt.savefig(self.root_path +'/report/randomforest_importance/' + str(Path(self.directory).stem) +'.png', dpi =300)
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' ' + str(Path(subdir).stem): ^10}{'Random forest importance plot stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
 
         except:
