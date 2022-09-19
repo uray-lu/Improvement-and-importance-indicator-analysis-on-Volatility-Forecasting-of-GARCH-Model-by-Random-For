@@ -136,7 +136,31 @@ class Model:
             
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast_result plot stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
     
-        
+        try:
+           
+           if os.path.isdir(self.root_path+'/report') == True:
+                   
+               if os.path.isdir(self.root_path+'/report/forecast_result') == True:
+                   
+                   pass
+               
+               else:
+               
+                   os.mkdir(self.root_path+'/report/forecast_result')
+           
+           else:   
+               
+               os.mkdir(self.root_path+'/report')
+               os.mkdir(self.root_path+'/report/forecast_result')
+       
+           rolling_predictions.to_csv(self.root_path+'/report/forecast_result/garch(1,1)_model_forecast.csv')
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
+           
+        except:
+           
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
+
+           
         
 
     def rf(self, model_types):
