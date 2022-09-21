@@ -10,10 +10,8 @@ from arch.univariate import arch_model
 import pandas as pd
 import numpy as np
 from sklearn import ensemble
-import time
-import matplotlib.dates as mdates    
+import time   
 import matplotlib.pyplot as plt
-import argparse
 import glob
 import os
 from colorama import init, Fore
@@ -25,8 +23,9 @@ import warnings
 
 class Model:
     
+    
+    
     def __init__(self):
-        
         plt.figure(figsize=(10,4))
         init(autoreset = True)
         logging.getLogger().setLevel(logging.INFO)
@@ -49,20 +48,7 @@ class Model:
         
         try:
             
-            if os.path.isdir(self.root_path+'/report') == True:
-                    
-                if os.path.isdir(self.root_path+'/report/whole_vols') == True:
-                    
-                    pass
-                
-                else:
-                
-                    os.mkdir(self.root_path+'/report/whole_vols')
-            
-            else:   
-                
-                os.mkdir(self.root_path+'/report')
-                os.mkdir(self.root_path+'/report/whole_vols')
+            self.create_dir('whole_vols')
             
         
             if os.path.isfile(self.root_path +'/report/whole_vols/volatility.png') == True:
@@ -88,7 +74,7 @@ class Model:
     
         
         
-    def garch(self):
+    def garch_forecast(self):
         
         test_size =  int(len(self.target)*0.3)
         date = self.date[-test_size:]
@@ -101,35 +87,22 @@ class Model:
             model = arch_model(train,mean = 'ARX' )
             model_fit = model.fit(disp='off')
             pred = model_fit.forecast(horizon=1)
-            rolling_predictions.append(np.sqrt(pred.variance.values[-1,:][0]))
-    
+            out = np.sqrt(pred.variance.values[-1,:][0])
+            rolling_predictions.append(out)
+        
+        rolling_predictions = pd.DataFrame(rolling_predictions)
         
         try:
             
-            if os.path.isdir(self.root_path+'/report') == True:
-                    
-                if os.path.isdir(self.root_path+'/report/forecast_result') == True:
-                    
-                    pass
-                
-                else:
-                
-                    os.mkdir(self.root_path+'/report/forecast_result')
+            self.create_dir('forecast_result')
             
-            else:   
-                
-                os.mkdir(self.root_path+'/report')
-                os.mkdir(self.root_path+'/report/forecast_result')
-            
-            true, = plt.plot(date, self.vols[-test_size:].reset_index(drop = True))
-            preds, = plt.plot(date, rolling_predictions)
-
+            plt.plot(date, self.vols[-test_size:].reset_index(drop = True))
+            plt.plot(date, rolling_predictions.iloc[:,-1])
             plt.xticks(range(0,437, 60))
             plt.tick_params(axis='both', which = 'major', labelsize = 8)
             plt.title('Volatility Prediction - Rolling Forecast Garch(1,1)', fontsize=20)
             plt.legend(['True Volatility', 'Predicted Volatility'], fontsize=16)
             plt.savefig(self.root_path +'/report/forecast_result/Garch(1,1)_forecast.png')
-            plt.show()
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast_result plot stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
 
         except:
@@ -137,33 +110,19 @@ class Model:
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast_result plot stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
     
         try:
-           
-           if os.path.isdir(self.root_path+'/report') == True:
-                   
-               if os.path.isdir(self.root_path+'/report/forecast_result') == True:
-                   
-                   pass
-               
-               else:
-               
-                   os.mkdir(self.root_path+'/report/forecast_result')
-           
-           else:   
-               
-               os.mkdir(self.root_path+'/report')
-               os.mkdir(self.root_path+'/report/forecast_result')
+          
        
            rolling_predictions.to_csv(self.root_path+'/report/forecast_result/garch(1,1)_model_forecast.csv')
-           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
            
         except:
            
-           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
 
            
         
 
-    def rf(self, model_types):
+    def rf_forecast(self, model_types):
         
        
        
@@ -191,9 +150,11 @@ class Model:
        
        exog_list = pd.concat([self.vols.drop(self.vols.index[-1]), exog_list], axis =1)
        test_data_size = int(len(self.labels)*0.3)
+       
+       print('-'*10 +'Training labe' +'-'*10)
        print(self.labels)
+       print('-'*10 +'Training Feature' +'-'*10)
        print(exog_list)
-       print(test_data_size)
        
        
        start = time.process_time()
@@ -206,35 +167,23 @@ class Model:
        
        date = self.date[-test_data_size:]
        
-    
-       forecast_output = pd.DataFrame(date).reset_index(drop = True)
-       forecast_output.columns = ['Date']
-       forecast_output  =pd.concat([forecast_output, forecast_model], axis = 1)
+       print(forecast_model)
+       #forecast_output = pd.DataFrame(date).reset_index(drop = True)
+       #forecast_output.columns = ['Date']
+       #orecast_output  =pd.concat([forecast_output, forecast_model], axis = 1)
+       
        
        
        try:
            
-           if os.path.isdir(self.root_path+'/report') == True:
-                   
-               if os.path.isdir(self.root_path+'/report/forecast_result') == True:
-                   
-                   pass
-               
-               else:
-               
-                   os.mkdir(self.root_path+'/report/forecast_result')
-           
-           else:   
-               
-               os.mkdir(self.root_path+'/report')
-               os.mkdir(self.root_path+'/report/forecast_result')
+           self.create_dir('forecast_result')
            
            plt.figure(figsize=(10,4))
            plt.plot(date, self.labels[-(test_data_size+1):(len(self.labels)-1)].reset_index(drop = True))
-           plt.plot(date, forecast_output.iloc[:, -1])
+           plt.plot(date, forecast_model)
            plt.xticks(range(0,437, 60))
            plt.tick_params(axis='both', which = 'major', labelsize = 8)
-           plt.title('Volatility Prediction - Rolling Forecast' + model_types + 'exog', fontsize=20)
+           plt.title('Volatility Prediction - Rolling Forecast ' + model_types + ' exog', fontsize=20)
            plt.legend(['True Volatility', 'Predicted Volatility'], fontsize=16)
            plt.savefig(self.root_path +'/report/forecast_result/' + model_types +'_exog_model_forecast.png')
            
@@ -248,23 +197,8 @@ class Model:
        
    
        try:
-           
-           if os.path.isdir(self.root_path+'/report') == True:
-                   
-               if os.path.isdir(self.root_path+'/report/forecast_result') == True:
-                   
-                   pass
-               
-               else:
-               
-                   os.mkdir(self.root_path+'/report/forecast_result')
-           
-           else:   
-               
-               os.mkdir(self.root_path+'/report')
-               os.mkdir(self.root_path+'/report/forecast_result')
        
-           forecast_output.to_csv(self.root_path+'/report/forecast_result/' + model_types +'_model_forecast.csv')
+           #forecast_output.to_csv(self.root_path+'/report/forecast_result/' + model_types +'_model_forecast.csv')
            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Random forest model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
            
        except:
@@ -278,7 +212,7 @@ class Model:
     def OneStepForecast(self, label, feature, test_size):
        
        print('-'*25, 'Start Training', '-'*25,)
-       pred_list = pd.DataFrame()
+       pred_list = []
        total = 0
        for i in range(test_size):
         
@@ -289,27 +223,28 @@ class Model:
             testX = feature[len(trainX):]
             
             print('Now Step:', i)
-           
+            
+            
             model = ensemble.RandomForestRegressor(n_estimators = 1000)
             model_fit = model.fit(trainX, trainy)
             
             
             predict = model_fit.predict(testX[0:1])
-            predict = pd.DataFrame(predict)
-            pred_list = pred_list.append(predict)
+            #predict = pd.DataFrame(predict)
+            pred_list.append(predict)
             
             
             
-            print('===> Completion:', '%.2f'%((i/test_size)*100), '%')
+            print('===> Completion:', '%.3f'%((i/test_size)*100), '%')
             
             end = time.process_time()+total
             total = (end - start)
-            print('-'*10,'Been through :', '%.2f'%((total)/60), 'min', '-'*10)
+            print('-'*10,'Been through :', '%.3f'%((total)/60), 'min', '-'*10)
         
        print('-'*25, 'Prediction Completed', '-'*25,)
        
-       pred_list = pred_list.reset_index(drop = True)
-       pred_list.columns = ['forecast result']
+       #pred_list = pred_list.reset_index(drop = True)
+       #pred_list.columns = ['forecast result']
        
        return pred_list 
     
@@ -348,14 +283,37 @@ class Model:
         return element_frame
     
     
-    
+    def create_dir(self, file_name):
         
+        try:
+            
+            if os.path.isdir(self.root_path+'/report') == True:
+                    
+                if os.path.isdir(self.root_path+'/report/' + file_name) == True:
+                    
+                    pass
+                
+                else:
+                
+                    os.mkdir(self.root_path+'/report/' + file_name)
+            
+            else:   
+                
+                os.mkdir(self.root_path+'/report')
+                os.mkdir(self.root_path+'/report/' + file_name)
+            
+            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' '+file_name}{' Directory creation': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")
+        
+        except:
+            
+            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' '+ file_name}{' Directory creation': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")
+        
+
+
+
+if __name__ == '__main__' :
     
-    
-    
-    
-    
-Model().rf('picked')
+    Model().rf_forecast('picked')
     
     
     
