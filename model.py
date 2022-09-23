@@ -21,6 +21,12 @@ from pathlib import Path
 import warnings
 
 
+#add save models
+#add 
+
+
+
+
 class Model:
     
     
@@ -124,8 +130,6 @@ class Model:
 
     def rf_forecast(self, model_types):
         
-       
-       
         
        btc_infos = self.get_element(self.root_path + '/Data/processed/btc_info')
        currencies = self.get_element(self.root_path + '/Data/processed/currency')
@@ -165,12 +169,14 @@ class Model:
 
        print('-'*10,'Total prediction time:', int((end - start)/60), 'min', '-'*10)
        
+       
        date = self.date[-test_data_size:]
        
-       print(forecast_model)
-       #forecast_output = pd.DataFrame(date).reset_index(drop = True)
-       #forecast_output.columns = ['Date']
-       #orecast_output  =pd.concat([forecast_output, forecast_model], axis = 1)
+       
+       forecast_output = pd.DataFrame(date).reset_index(drop = True)
+       forecast_output.columns = ['Date']
+       forecast_output  = pd.concat([forecast_output, forecast_model], axis = 1)
+       
        
        
        
@@ -198,7 +204,7 @@ class Model:
    
        try:
        
-           #forecast_output.to_csv(self.root_path+'/report/forecast_result/' + model_types +'_model_forecast.csv')
+           forecast_output.to_csv(self.root_path+'/report/forecast_result/' + model_types +'_model_forecast.csv')
            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Random forest model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
            
        except:
@@ -212,7 +218,7 @@ class Model:
     def OneStepForecast(self, label, feature, test_size):
        
        print('-'*25, 'Start Training', '-'*25,)
-       pred_list = []
+       pred_list = pd.DataFrame()
        total = 0
        for i in range(test_size):
         
@@ -230,8 +236,8 @@ class Model:
             
             
             predict = model_fit.predict(testX[0:1])
-            #predict = pd.DataFrame(predict)
-            pred_list.append(predict)
+            predict = pd.DataFrame(predict)
+            pred_list = pred_list.append(predict)
             
             
             
@@ -243,8 +249,8 @@ class Model:
         
        print('-'*25, 'Prediction Completed', '-'*25,)
        
-       #pred_list = pred_list.reset_index(drop = True)
-       #pred_list.columns = ['forecast result']
+       pred_list = pred_list.reset_index(drop = True)
+       pred_list.columns = ['forecast result']
        
        return pred_list 
     
@@ -313,7 +319,9 @@ class Model:
 
 if __name__ == '__main__' :
     
-    Model().rf_forecast('picked')
+    #Model().garch_forecast()
+    #Model().rf_forecast('picked')
+    Model().rf_forecast('whole')
     
     
     
