@@ -22,6 +22,8 @@ from pathlib import Path
 import warnings
 import argparse
 
+
+
 class result_stats_test:
     
     def __init__(self, directory):
@@ -154,25 +156,20 @@ class result_stats_test:
         except:
             
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' '+ file_name}{' Directory creation': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")
-         
+                 
 
 
 
 
+if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-subdir", "--subdirectory", help="enter subdirectory name")
+    params = parser.parse_args()
+    subdir = params.subdirectory
+    subdir = str(subdir)
 
-
-        
-
-
-
-
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument("-subdir", "--subdirectory", help="enter subdirectory name")
-params = parser.parse_args()
-subdir = params.subdirectory
-subdir = str(subdir)
-
-result_stats_test(subdir).forecast_error()
+    result = result_stats_test(subdir)
+    
+    result.forecast_error()
+    result.dm_test()
