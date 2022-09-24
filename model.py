@@ -21,10 +21,6 @@ from pathlib import Path
 import warnings
 
 
-#add save models
-#add 
-
-
 
 
 class Model:
@@ -32,6 +28,7 @@ class Model:
     
     
     def __init__(self):
+        
         plt.figure(figsize=(10,4))
         init(autoreset = True)
         logging.getLogger().setLevel(logging.INFO)
@@ -118,12 +115,12 @@ class Model:
         try:
           
        
-           rolling_predictions.to_csv(self.root_path+'/report/forecast_result/garch(1,1)_model_forecast.csv')
-           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
+            rolling_predictions.to_csv(self.root_path+'/report/forecast_result/garch(1,1)_model_forecast.csv')
+            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
            
         except:
            
-           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
+            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Garch(1,1) forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
 
            
         
@@ -160,7 +157,16 @@ class Model:
        print('-'*10 +'Training Feature' +'-'*10)
        print(exog_list)
        
-       
+       try:
+           
+           self.labels[-(test_data_size+1):(len(self.labels)-1)].reset_index(drop = True).to_csv(self.root_path+'/report/forecast_result/true_vols.csv')
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' True volatility for testing stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")
+        
+       except:
+           
+           logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' True volatility for testing stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")
+        
+        
        start = time.process_time()
        
        forecast_model = self.OneStepForecast(self.labels, exog_list, test_data_size)
@@ -203,7 +209,7 @@ class Model:
        
    
        try:
-       
+           
            forecast_output.to_csv(self.root_path+'/report/forecast_result/' + model_types +'_model_forecast.csv')
            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Random forest model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
            
@@ -211,9 +217,8 @@ class Model:
            
            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' Random forest model forecast csv file stored': ^10}{'·'*20: ^10}{Fore.RED}{'Error'}")    
 
-           
-             
-   
+    
+          
     
     def OneStepForecast(self, label, feature, test_size):
        
@@ -308,7 +313,7 @@ class Model:
                 os.mkdir(self.root_path+'/report')
                 os.mkdir(self.root_path+'/report/' + file_name)
             
-            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' '+file_name}{' Directory creation': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")
+                logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' '+file_name}{' Directory creation': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")
         
         except:
             
@@ -317,10 +322,18 @@ class Model:
 
 
 
+
+
+
+###terminal choice
+
+
+
+
 if __name__ == '__main__' :
     
-    #Model().garch_forecast()
-    #Model().rf_forecast('picked')
+    Model().garch_forecast()
+    Model().rf_forecast('picked')
     Model().rf_forecast('whole')
     
     
