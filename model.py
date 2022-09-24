@@ -19,7 +19,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 import warnings
-
+import argparse
 
 
 
@@ -325,16 +325,33 @@ class Model:
 
 
 
-###terminal choice
+
 
 
 
 
 if __name__ == '__main__' :
     
-    Model().garch_forecast()
-    Model().rf_forecast('picked')
-    Model().rf_forecast('whole')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-type", "--Model_Type", help="enter Model Type")
+    params = parser.parse_args()
+    subdir = params.Model_Type
+    subdir = str(subdir)
+
+    
+    data = Model()
+    
+    if subdir == 'garch':
+        
+        data.garch_forecast()
+        
+    elif subdir == 'picked':
+        
+        data.rf_forecast(subdir)
+        
+    elif subdir == 'whole':
+        
+        data.rf_forecast(subdir)
     
     
     
