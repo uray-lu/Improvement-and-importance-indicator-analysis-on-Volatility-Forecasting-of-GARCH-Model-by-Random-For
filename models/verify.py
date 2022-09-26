@@ -48,7 +48,7 @@ class result_stats_test:
         
         self.frame = new_frame.T
         
-    def forecast_error(self):
+    def loss_func(self):
         
         out_frame = pd.DataFrame()
         for i in range(len(self.frame.columns)):
@@ -171,5 +171,5 @@ if __name__ == '__main__':
 
     result = result_stats_test(subdir)
     
-    result.forecast_error()
+    result.loss_func()
     result.dm_test()
