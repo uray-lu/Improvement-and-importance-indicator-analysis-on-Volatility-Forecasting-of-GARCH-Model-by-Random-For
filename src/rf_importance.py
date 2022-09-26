@@ -106,21 +106,21 @@ class rf_importance:
             
             if os.path.isdir(self.root_path+'/report') == True:
                     
-                if os.path.isdir(self.root_path+'/report/randomforest_importance') == True:
+                if os.path.isdir(self.root_path+'/report/randomforest_feature_importance') == True:
                     
                     pass
                 
                 else:
                 
-                    os.mkdir(self.root_path+'/report/randomforest_importance')
+                    os.mkdir(self.root_path+'/report/randomforest_feature_importance')
             
             else:   
                 
                 os.mkdir(self.root_path+'/report')
-                os.mkdir(self.root_path+'/report/randomforest_importance')
+                os.mkdir(self.root_path+'/report/randomforest_feature_importance')
             
             
-            plt.savefig(self.root_path +'/report/randomforest_importance/' + str(Path(self.directory).stem) +'.png', dpi =300)
+            plt.savefig(self.root_path +'/report/randomforest_feature_importance/' + str(Path(self.directory).stem) +'.png', dpi =300)
             logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' ' + str(Path(subdir).stem): ^10}{'Random forest importance plot stored': ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
 
         except:

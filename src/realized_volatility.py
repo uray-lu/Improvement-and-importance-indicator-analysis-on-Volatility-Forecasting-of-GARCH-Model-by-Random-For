@@ -38,10 +38,10 @@ def realized_volatility(data):
 
     
     volatility.to_csv(root_path+'/data/processed/btc_info/Realized_volatility_unit(d).csv')
-    print(f"{'Realized Volatility calculation': <10}{'.'*20 :^10}{Back.GREEN}{'Done': ^10}")
+    print(f"{'Realized Volatility calculation': <10}{'.'*20 :^10}{Back.GREEN}{'pass': ^10}")
     
 
-realized_volatility('/Users/ray/Desktop/projects/bitcoin-volatility-forecast-improvement-through-random-forest-algorithm/data/raw/btc_info/Hourly_kline.csv')
+realized_volatility('./data/raw/btc_info/Hourly_kline.csv')
 
 
 

@@ -35,6 +35,7 @@ class unitroot:
         
 
         csv_files = glob.glob(os.path.join(self.directory, '*.csv'))
+        
         new_frame = pd.DataFrame()
         
         for f in csv_files:
@@ -47,7 +48,7 @@ class unitroot:
         
         self.new_frame = new_frame.T
         
-    
+        
 
     def uniroot_adf(self):
         
@@ -129,7 +130,7 @@ class unitroot:
         
             
         print(kpss_output.T)
-        #print(type(kpss_output.T))
+        
         return kpss_output.T
 
     def mkoutput(self, test_type):
@@ -168,7 +169,7 @@ class unitroot:
                 os.mkdir(root_path+'/report/unit_root_test/' + str(Path(self.directory).stem))
     
             layout.to_csv(root_path+'/report/unit_root_test/'+ str(Path(self.directory).stem) + '/' +str(Path(self.directory).stem)+ '_'+ str(test_type)+'.csv')
-            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' ' + str(Path(self.directory).stem): ^10}{'Unit Root test Storage of': ^10}{test_type: ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
+            logging.info(f"{(datetime.now().strftime('%Y-%m-%d %H:%M:%S')):<10}{' ' + str(Path(self.directory).stem) + ' ': ^10}{'Unit Root test Storage of': ^10}{test_type: ^10}{'·'*20: ^10}{Fore.GREEN}{'Pass'}")    
 
         except:
     
@@ -186,7 +187,8 @@ if __name__ == '__main__' :
     params = parser.parse_args()
     subdir = params.subdirectory
     subdir = str(subdir)
-
+    
+    
     input_data = unitroot(subdir)
     input_data.mkoutput('adf')
     input_data.mkoutput('pp')

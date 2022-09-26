@@ -1,0 +1,16 @@
+pandas
+diebold_mariano_test
+sklearn
+matplotlib
+numpy
+colorama
+arch
+argparse
+colorama
+datetime
+pathlib
+statsmodels
+lxml
+
+
+
