@@ -68,6 +68,11 @@ forecast_result_verification:
 	@python ./models/verify.py -subdir ./report/forecast_result
 
 
+clean: #clean the venv and __pycache__
+clean: 
+	rm -rf __pycache__
+	rm -rf $(VENV)
+
 
 
 	
